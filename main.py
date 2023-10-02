@@ -23,7 +23,7 @@ def main():
     # Update sheet columns 2, 3 and 4 with those values for each game.
     
     print('------------')
-    searchQuery = input("Press Enter to continue")
+    pause = input("Press Enter to continue")
 
 if __name__ == "__main__":
     main()
