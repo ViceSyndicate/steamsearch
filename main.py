@@ -7,14 +7,17 @@ def main():
     gc = gspread.service_account(filename='credentials.json')
     gc.auth
     #get testspreadsheet
-    spreadsheet = gc.open('TestSheet')
+    spreadsheet = gc.open("DEV COPY Tsumi's Giveaway Games")
     #get working sheet
-    worksheet = spreadsheet.worksheet('Sheet1')
+    worksheet = spreadsheet.worksheet('Copy of Keys for Giveaway')
     #get all values from column 1
-    gameList = worksheet.col_values(1)
+    gameList = worksheet.col_values(2)
 
+    counter = 1
     for val in gameList:
-        print(val)
+
+        print(str(counter) + ' - ' + val)
+        counter = counter +1
     
     # TODO Make steam api search on each title in gameList
     # get Rating, Platform and Tags. 
