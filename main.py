@@ -3,7 +3,7 @@ import gspread
 def main():
     print("Executing...")
     print('------------')
-    # get get authentification for spreadsheets
+    # do authentification for google spreadsheets
     gc = gspread.service_account(filename='credentials.json')
     gc.auth
     #get testspreadsheet
@@ -16,9 +16,11 @@ def main():
     for val in gameList:
         print(val)
     
-    # TODO do steam api search on each title in gameList
-    # get Rating, Tags and store them for each game.
-    # Update sheet columns 2 and 3 with those values. 
+    # TODO Make steam api search on each title in gameList
+    # get Rating, Platform and Tags. 
+    # Store them in lists OR
+    # Create a object for each game that has each variable in it. 
+    # Update sheet columns 2, 3 and 4 with those values for each game.
     
     print('------------')
     searchQuery = input("Press Enter to continue")
