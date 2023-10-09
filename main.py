@@ -27,15 +27,15 @@ def main():
     
     
     
+    
     steamGames = apiRequests.getGameList()
     matchingIds = apiRequests.returnMatchingGameIds(sheetGameList, steamGames)
-    
-    matchingIds = matchingIds[:5]
-
-
-    #apiRequests.getAppData(matchingIds[0])
+    matchingIds = matchingIds[:2]
     print('matchingames: '+str(len(matchingIds))+'/'+str(len(sheetGameList)))
+    
+
     gameDataList = []
+
     
     for id in matchingIds:
         # wait 2.5s to avoid spamming steams api 
@@ -44,13 +44,12 @@ def main():
         print('Requesting data on ID: ' + str(id))
         gameDataList.append(apiRequests.getAppData(id))
     
-    print(gameDataList)
-    print(gameDataList[0])
-
     
+    '''
     # Specify the CSV file name
     csv_filename = "games.csv"
 
+    
     # Open the CSV file for writing
     with open(csv_filename, 'w', newline='') as csvfile:
         # Create a CSV writer object
@@ -75,7 +74,34 @@ def main():
             csv_writer.writerow(row_data)
 
         print(f"Data has been written to {csv_filename}")
+    '''
     
+    
+    reviewCol = 'F'
+
+    colPos = 1
+    sheetNames = worksheet.col_values(2)
+    '''
+    for sheetName in sheetNames:
+        print(str(colPos) + '-' + sheetName)
+        colPos = colPos +1
+        for game in gameDataList:
+            if game['name'] == sheetName:
+                reviewCol + str(colPos)
+                worksheet.update(range_name=reviewCol, values=game['reviewScore'])
+            reviewCol = 'F'
+    '''     
+        
+    '''
+    for game in sheetGameList:
+        worksheet.col_values()
+        game['name']
+        game['platforms']
+        colPos+1
+    '''
+    
+    #worksheet.append_row(values=platformList, table_range='H2')
+
     print('------------')
     pause = input("Press Enter to continue")
 
