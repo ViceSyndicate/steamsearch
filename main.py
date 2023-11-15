@@ -3,6 +3,7 @@ import apiRequests
 import time
 import csv
 
+
 def main():
     print("Executing...")
     print('------------')
@@ -17,12 +18,6 @@ def main():
     sheetGameList = worksheet.col_values(2)
     #remove the first value which is the name of the column.
     sheetGameList.pop(0)
-
-    # TODO Make steam api search on each title in gameList
-    # get Rating, Platform and Tags. 
-    # Store them in lists OR
-    # Create a object for each game that has each variable in it. 
-    # Update sheet columns 2, 3 and 4 with those values for each game.
 
     
     
@@ -44,7 +39,46 @@ def main():
         print('Requesting data on ID: ' + str(id))
         gameDataList.append(apiRequests.getAppData(id))
     
+    for game in gameDataList:
+        print(game)
     
+    newsheet = spreadsheet.worksheet('Copy of Copy of Keys for Giveaway')
+    headers = ['id', 'Name', 'Platforms', 'Popular User Defined Tags', 'Steam All-time Review Score %']
+    newsheet.insert_rows([headers], 1)
+    data_to_insert = []
+    for game in gameDataList:
+            # Extract the attributes from the Game object
+            row_data = [
+            game['id'],
+            game['Name'],
+            ', '.join(game['Platforms']),
+            ', '.join(game['Popular User Defined Tags']),
+            game['Steam All-time Review Score %'],
+            #game['Popular User Defined Tags']
+            ]
+            data_to_insert.append(row_data)
+        
+    for game in gameDataList: 
+         print(game)
+
+
+    newsheet.insert_rows(data_to_insert, 2)
+    
+    #reviewCol = 'F'
+
+    #colPos = 1
+    #sheetNames = worksheet.col_values(2)
+
+    
+    #worksheet.append_row(values=platformList, table_range='H2')
+
+    print('------------')
+    pause = input("Press Enter to continue")
+
+if __name__ == "__main__":
+    main()
+
+
     '''
     # Specify the CSV file name
     csv_filename = "games.csv"
@@ -75,12 +109,8 @@ def main():
 
         print(f"Data has been written to {csv_filename}")
     '''
-    
-    
-    reviewCol = 'F'
 
-    colPos = 1
-    sheetNames = worksheet.col_values(2)
+
     '''
     for sheetName in sheetNames:
         print(str(colPos) + '-' + sheetName)
@@ -99,11 +129,3 @@ def main():
         game['platforms']
         colPos+1
     '''
-    
-    #worksheet.append_row(values=platformList, table_range='H2')
-
-    print('------------')
-    pause = input("Press Enter to continue")
-
-if __name__ == "__main__":
-    main()

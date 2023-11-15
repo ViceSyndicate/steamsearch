@@ -42,6 +42,7 @@ def returnMatchingGameIds(sheetGames, steamGames):
         for game in steamGames:
             # if a steamGame has a title matching our list of games
             # Add that games appid to our steamGamesId list
+            # ALT?: if game['name'].__contains__(sheetName):
             if game['name'] == sheetName:
                 #print(game['name'])
                 #print(sheetName)
@@ -79,12 +80,12 @@ def getAppData(id):
         reviewScore = getReviewData(id)
 
         gameData = {
-            "name": name,
             "id": id,
-            "platforms": platforms,
-            "genres": gameGenres,
-            "reviewScore": reviewScore,
-            "short_Description": short_Description
+            "Name": name,
+            "Platforms": platforms,
+            "Popular User Defined Tags": gameGenres,
+            "Steam All-time Review Score %": reviewScore,
+            #"short description": short_Description
         }
         return gameData
         
