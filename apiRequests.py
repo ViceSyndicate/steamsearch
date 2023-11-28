@@ -78,6 +78,7 @@ def getAppData(id):
         short_Description = jsonData[str(id)]['data']['short_description']
         time.sleep(2.5)
         reviewScore = getReviewData(id)
+        #reviewScore = genres_data  = jsonData[str(id)]['data']['metacritic']['score']
 
         gameData = {
             "id": id,
@@ -101,6 +102,7 @@ def getReviewData(id):
     jsonData = json.loads(jsonGame.content)
     if (jsonData['success']):
         review_score = jsonData['query_summary']['review_score_desc']
+        #review_score = jsonData['query_summary']['review_score_desc']
     else:
         print("Couldn't get appreview data")
     return review_score
