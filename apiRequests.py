@@ -74,10 +74,19 @@ def getAppData(id):
 
         short_Description = jsonData[str(id)]['data']['short_description']
         time.sleep(2.5)
-        #reviewScore = getReviewData(id)
-        reviewScore = genres_data  = jsonData[str(id)]['data']['metacritic']['score']
+        reviewScore = ''
+        try: 
+            reviewScore = jsonData[str(id)]['data']['metacritic']['score']
+            reviewScore = str(reviewScore) + '%'
+        except KeyError:
+            print("metacritic score does not exist. Getting steam review instead.")
+            reviewScore = getReviewData(id)
 
+        singleMultiplayerData = ''
         categories = jsonData[str(id)]['data']['categories']
+        for category in categories:
+            if category['description'] == "Single-player" or category['description'] == "Multi-player" or category['description'] == "Online Co-op":
+                singleMultiplayerData += category['description'] + ", "
 
         gameData = {
             "id": id,
@@ -85,6 +94,7 @@ def getAppData(id):
             "Platforms": platforms,
             "Popular User Defined Tags": gameGenres,
             "Steam All-time Review Score %": reviewScore,
+            "Singleplayer/Multiplayer Capabilities": singleMultiplayerData
             #"short description": short_Description
         }
         return gameData
