@@ -27,8 +27,6 @@ def getRequest(url):
         gamesData = json.loads(request.content)
         return gamesData
 
-    #jsonData = json.loads(jsonGames.content)
-    #return jsonData
 
 def getGameList():
     jsonData = getRequest(steamGamesUrl)
@@ -64,7 +62,6 @@ def getAppData(id):
         #loop through each item in generes and get description
         genres_data  = jsonData[str(id)]['data']['genres']
         gameGenres = [genre['description'] for genre in genres_data]
-        #platforms = jsonData[str(id)]['data']['platforms']
 
         platforms = []
         platformData = jsonData[str(id)]['data']['platforms']
@@ -92,9 +89,9 @@ def getAppData(id):
         
     else:
         print("couldn't get appdetails!")
-    #return jsonData[str(id)]['applist']['apps']
 
     # Rating, Platform, description(Single/Multiplayer capabilities) and Tags. 
+    # gets steam page review data instead of metacritics% review.
 def getReviewData(id): 
     url = 'https://store.steampowered.com/appreviews/' + str(id) + '?json=1'
     review_score = ''
@@ -102,12 +99,8 @@ def getReviewData(id):
     jsonData = json.loads(jsonGame.content)
     if (jsonData['success']):
         review_score = jsonData['query_summary']['review_score_desc']
-        #review_score = jsonData['query_summary']['review_score_desc']
     else:
         print("Couldn't get appreview data")
     return review_score
 
 # Rating, Platform, description(Single/Multiplayer capabilities) and Tags. 
-
-# TODO 
-# Fill google sheet fields with the data that we DID find.
