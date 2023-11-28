@@ -63,11 +63,11 @@ def main():
             if name == game_data['Name']:
                 # Update the corresponding cells in the Google Sheet
                 row_number = sheetGameList.index(name) + 2  # Adding 2 to convert to sheet row number
-                worksheet.update_cell(row_number, 7, game_data['Steam All-time Review Score %'])
+                worksheet.update_cell(row_number, 1, game_data['id'])
+                worksheet.update_cell(row_number, 7, str(game_data['Steam All-time Review Score %']) + '%')
                 worksheet.update_cell(row_number, 8, ', '.join(game_data['Platforms']))
                 #worksheet.update_cell(row_number, 9, game_data['Steam All-time Review Score %']) # single/multiplayer
                 worksheet.update_cell(row_number, 10, ', '.join(game_data['Popular User Defined Tags']))
-                worksheet.update_cell(row_number, 1, game_data['id'])
                 # Add more updates as needed
                 time.sleep(1)
                 break

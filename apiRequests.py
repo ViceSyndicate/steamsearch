@@ -77,6 +77,8 @@ def getAppData(id):
         #reviewScore = getReviewData(id)
         reviewScore = genres_data  = jsonData[str(id)]['data']['metacritic']['score']
 
+        categories = jsonData[str(id)]['data']['categories']
+
         gameData = {
             "id": id,
             "Name": name,
