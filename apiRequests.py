@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import math
 
 class Game:
     def __init__(self, name, ID, platforms, genres, short_Description):
@@ -42,8 +43,6 @@ def returnMatchingGameIds(sheetGames, steamGames):
             # Add that games appid to our steamGamesId list
             # ALT?: if game['name'].__contains__(sheetName):
             if game['name'] == sheetName:
-                #print(game['name'])
-                #print(sheetName)
                 if not steamGameIds.__contains__(game['appid']):
                     steamGameIds.append(game['appid'])
                 else:
@@ -73,7 +72,9 @@ def getAppData(id):
                 platforms.append(platform)
 
         short_Description = jsonData[str(id)]['data']['short_description']
-        time.sleep(2.5)
+        time.sleep(1)
+
+        '''
         reviewScore = ''
         try: 
             reviewScore = jsonData[str(id)]['data']['metacritic']['score']
@@ -81,7 +82,9 @@ def getAppData(id):
         except KeyError:
             print("metacritic score does not exist. Getting steam review instead.")
             reviewScore = getReviewData(id)
+        '''
 
+        reviewScore = getReviewData(id)
         singleMultiplayerData = ''
         categories = jsonData[str(id)]['data']['categories']
         for category in categories:
@@ -105,14 +108,30 @@ def getAppData(id):
     # Rating, Platform, description(Single/Multiplayer capabilities) and Tags. 
     # gets steam page review data instead of metacritics% review.
 def getReviewData(id): 
-    url = 'https://store.steampowered.com/appreviews/' + str(id) + '?json=1'
+    url = 'https://store.steampowered.com/appreviews/' + str(id) + '?json=1&language=all'
+    #https://store.steampowered.com/appreviews/934780?json=1&language=all
     review_score = ''
     jsonGame = requests.get(url)
     jsonData = json.loads(jsonGame.content)
     if (jsonData['success']):
-        review_score = jsonData['query_summary']['review_score_desc']
+        #review_score = jsonData['query_summary']['review_score_desc']
+        totalPositiveReviews = jsonData['query_summary']['total_positive']
+        totalReviews = jsonData['query_summary']['total_reviews']
+
+        if(totalReviews == 0):
+            reviewPercentege = ''
+        else:
+            sum = math.floor((totalPositiveReviews / totalReviews) * 100)
+            reviewPercentege = str(sum) + '%'
+
+        
+        #print("dividing " + str(totalPositiveReviews) + ' / ' + str(totalReviews))
+        #print(totalPositiveReviews / totalReviews)
+        #print("Multiplying by 100 = " + str(sum))
+        
+
     else:
         print("Couldn't get appreview data")
-    return review_score
+    return reviewPercentege
 
 # Rating, Platform, description(Single/Multiplayer capabilities) and Tags. 

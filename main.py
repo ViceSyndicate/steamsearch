@@ -3,7 +3,6 @@ import apiRequests
 import time
 import csv
 
-
 def main():
     print("Executing...")
     print('------------')
@@ -16,8 +15,10 @@ def main():
     worksheet = spreadsheet.worksheet('Copy of Keys for Giveaway')
     #get all values from column 1
     sheetGameList = worksheet.col_values(2)[1:]
-    #remove the first value which is the name of the column.
-    #sheetGameList.pop(0)
+    
+    # TODO Get all ID's in list.
+    # Fill in that row with data using ID.
+    #sheetGameIdList = worksheet.col_values(1)[1:]
 
     
     
@@ -35,7 +36,7 @@ def main():
     for id in matchingIds:
         # wait 2 seconds to avoid spamming steams api 
         # and getting timed out/blocked.
-        time.sleep(2)
+        time.sleep(1)
         print('Requesting data on ID: ' + str(id))
         game_data_list.append(apiRequests.getAppData(id))
     
