@@ -103,7 +103,7 @@ def getAppData(id):
         return gameData
         
     else:
-        print("couldn't get appdetails!")
+        print("couldn't get appdetails for ID: " + str(id))
 
     # Rating, Platform, description(Single/Multiplayer capabilities) and Tags. 
     # gets steam page review data instead of metacritics% review.

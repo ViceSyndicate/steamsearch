@@ -26,7 +26,7 @@ def main():
     
     steamGames = apiRequests.getGameList()
     matchingIds = apiRequests.returnMatchingGameIds(sheetGameList, steamGames)
-    matchingIds = matchingIds[:10]
+    #matchingIds = matchingIds[:10]
     print('matchingames: '+str(len(matchingIds))+'/'+str(len(sheetGameList)))
     
 
@@ -44,20 +44,27 @@ def main():
     headers = ['id', 'Name', 'Platforms', 'Popular User Defined Tags', 'Steam All-time Review Score %']
     newsheet.insert_rows([headers], 1)
     data_to_insert = []
+
+    #keysToCheck = ["id", "Name", "Platforms", "Popular User Defined Tags", "Steam All-time Review Score %"]
+    #for key in keysToCheck:
+
     for game in game_data_list:
             # Extract the attributes from the Game object
-            row_data = [
-            game['id'],
-            game['Name'],
-            ', '.join(game['Platforms']),
-            ', '.join(game['Popular User Defined Tags']),
-            game['Steam All-time Review Score %'],
-            #game['Popular User Defined Tags']
-            ]
-            data_to_insert.append(row_data)
+            print(game)
+            print("----------")
+            if game['Name'] is not None: 
+                row_data = [
+                game['id'],
+                game['Name'],
+                ', '.join(game['Platforms']),
+                ', '.join(game['Popular User Defined Tags']),
+                game['Steam All-time Review Score %'],
+                #game['Popular User Defined Tags']
+                ]
+                data_to_insert.append(row_data)
         
-    for game in game_data_list: 
-         print(game['Name'])
+    #for game in game_data_list: 
+         #print(game['Name'])
     
     for name in sheetGameList:
         for game_data in game_data_list:
@@ -65,9 +72,13 @@ def main():
                 # Update the corresponding cells in the Google Sheet
                 row_number = sheetGameList.index(name) + 2  # Adding 2 to convert to sheet row number
                 worksheet.update_cell(row_number, 1, game_data['id'])
+                time.sleep(1)
                 worksheet.update_cell(row_number, 7, game_data['Steam All-time Review Score %'])
+                time.sleep(1)
                 worksheet.update_cell(row_number, 8, ', '.join(game_data['Platforms']))
+                time.sleep(1)
                 worksheet.update_cell(row_number, 9, game_data['Singleplayer/Multiplayer Capabilities']) # single/multiplayer
+                time.sleep(1)
                 worksheet.update_cell(row_number, 10, ', '.join(game_data['Popular User Defined Tags']))
                 # Add more updates as needed
                 time.sleep(1)
@@ -79,3 +90,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
