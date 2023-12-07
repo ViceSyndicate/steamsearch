@@ -72,7 +72,6 @@ def getAppData(id):
                 platforms.append(platform)
 
         short_Description = jsonData[str(id)]['data']['short_description']
-        time.sleep(1)
 
         '''
         reviewScore = ''
@@ -91,6 +90,9 @@ def getAppData(id):
             if category['description'] == "Single-player" or category['description'] == "Multi-player" or category['description'] == "Online Co-op":
                 # add category['description'] to list to then remove the last ", "
                 singleMultiplayerData += category['description'] + ", "
+        # remove the last ' , '
+        singleMultiplayerData = singleMultiplayerData.rstrip(", ")
+
         #TODO don't add ", " if it's the last result in descriptions 
 
         gameData = {

@@ -37,7 +37,7 @@ def main():
     for id in matchingIds:
         # wait to avoid spamming steams api 
         # and getting timed out/blocked.
-        time.sleep(1)
+        #time.sleep(1)
         print('Requesting data on ID: ' + str(id))
         game = apiRequests.getAppData(id)
 
