@@ -89,6 +89,7 @@ def getAppData(id):
         categories = jsonData[str(id)]['data']['categories']
         for category in categories:
             if category['description'] == "Single-player" or category['description'] == "Multi-player" or category['description'] == "Online Co-op":
+                # add category['description'] to list to then remove the last ", "
                 singleMultiplayerData += category['description'] + ", "
         #TODO don't add ", " if it's the last result in descriptions 
 
