@@ -15,7 +15,7 @@ def main():
     worksheet = spreadsheet.worksheet('Copy of Keys for Giveaway')
     #get all values from column 1
     sheetGameList = worksheet.col_values(2)[1:]
-    #sheetIdList = worksheet.col_values(1)[1:]
+    sheetIdList = worksheet.col_values(1)[1:]
     
     # TODO Get all ID's in list.
     # Fill in that row with data using ID.
@@ -39,9 +39,11 @@ def main():
         # and getting timed out/blocked.
         #time.sleep(1)
         print('Requesting data on ID: ' + str(id))
+        
+        # this can return NoneType if bad ID is sent in 
         game = apiRequests.getAppData(id)
-
         print(game)
+        #TODO Check if game is NoneType
         print("----------")
         if game['Name'] is not None: 
             row_data = [
@@ -53,6 +55,21 @@ def main():
             #game['Popular User Defined Tags']
             ]
             data_to_insert.append(row_data)
+
+            for id in sheetIdList:
+                row_number = sheetIdList.index(id) + 2
+                worksheet.update_cell(row_number, 1, game['id'])
+                time.sleep(1)
+                worksheet.update_cell(row_number, 7, game['Steam All-time Review Score %'])
+                time.sleep(1)
+                worksheet.update_cell(row_number, 8, ', '.join(game['Platforms']))
+                time.sleep(1)
+                worksheet.update_cell(row_number, 9, game['Singleplayer/Multiplayer Capabilities']) # single/multiplayer
+                time.sleep(1)
+                worksheet.update_cell(row_number, 10, ', '.join(game['Popular User Defined Tags']))
+                # Add more updates as needed
+                break
+        
             
             for name in sheetGameList:
                 if name == game['Name']: #TODO OR id in sheetGameList == game['id']
