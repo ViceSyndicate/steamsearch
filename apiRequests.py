@@ -28,7 +28,6 @@ def getRequest(url):
         gamesData = json.loads(request.content)
         return gamesData
 
-
 def getGameList():
     jsonData = getRequest(steamGamesUrl)
     return jsonData['applist']['apps']
@@ -42,7 +41,8 @@ def returnMatchingGameIds(sheetGames, steamGames):
             # if a steamGame has a title matching our list of games
             # Add that games appid to our steamGamesId list
             # ALT?: if game['name'].__contains__(sheetName):
-            if game['name'] == sheetName:
+            
+            if game['name'] == sheetName: # to compare 'id' we would need to send a list of ID's in too..
                 if not steamGameIds.__contains__(game['appid']):
                     steamGameIds.append(game['appid'])
                 else:
@@ -90,6 +90,7 @@ def getAppData(id):
         for category in categories:
             if category['description'] == "Single-player" or category['description'] == "Multi-player" or category['description'] == "Online Co-op":
                 singleMultiplayerData += category['description'] + ", "
+        #TODO don't add ", " if it's the last result in descriptions 
 
         gameData = {
             "id": id,

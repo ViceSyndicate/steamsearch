@@ -15,14 +15,11 @@ def main():
     worksheet = spreadsheet.worksheet('Copy of Keys for Giveaway')
     #get all values from column 1
     sheetGameList = worksheet.col_values(2)[1:]
+    #sheetIdList = worksheet.col_values(1)[1:]
     
     # TODO Get all ID's in list.
     # Fill in that row with data using ID.
     #sheetGameIdList = worksheet.col_values(1)[1:]
-
-    
-    
-    
     
     steamGames = apiRequests.getGameList()
     matchingIds = apiRequests.returnMatchingGameIds(sheetGameList, steamGames)
@@ -30,15 +27,14 @@ def main():
     print('matchingames: '+str(len(matchingIds))+'/'+str(len(sheetGameList)))
     
 
-    game_data_list = []
+    gameDataList = []
 
-    
     for id in matchingIds:
-        # wait 2 seconds to avoid spamming steams api 
+        # wait to avoid spamming steams api 
         # and getting timed out/blocked.
         time.sleep(1)
         print('Requesting data on ID: ' + str(id))
-        game_data_list.append(apiRequests.getAppData(id))
+        gameDataList.append(apiRequests.getAppData(id))
     
     newsheet = spreadsheet.worksheet('Copy of Copy of Keys for Giveaway')
     headers = ['id', 'Name', 'Platforms', 'Popular User Defined Tags', 'Steam All-time Review Score %']
@@ -48,7 +44,9 @@ def main():
     #keysToCheck = ["id", "Name", "Platforms", "Popular User Defined Tags", "Steam All-time Review Score %"]
     #for key in keysToCheck:
 
-    for game in game_data_list:
+    # we could move this loop in to matchingIds loop? 
+
+    for game in gameDataList:
             # Extract the attributes from the Game object
             print(game)
             print("----------")
@@ -62,12 +60,9 @@ def main():
                 #game['Popular User Defined Tags']
                 ]
                 data_to_insert.append(row_data)
-        
-    #for game in game_data_list: 
-         #print(game['Name'])
     
     for name in sheetGameList:
-        for game_data in game_data_list:
+        for game_data in gameDataList:
             if name == game_data['Name']:
                 # Update the corresponding cells in the Google Sheet
                 row_number = sheetGameList.index(name) + 2  # Adding 2 to convert to sheet row number
