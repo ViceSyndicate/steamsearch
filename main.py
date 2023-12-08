@@ -24,7 +24,7 @@ def main():
     steamGames = apiRequests.getGameList()
     matchingIds = apiRequests.returnMatchingGameIds(sheetGameList, steamGames)
     #matchingIds = matchingIds[:10]
-    print('matchingames: '+str(len(matchingIds))+'/'+str(len(sheetGameList)))
+    print('matching game names: '+str(len(matchingIds))+'/'+str(len(sheetGameList)))
     
 
     gameDataList = []
@@ -45,7 +45,7 @@ def main():
         print(game)
         #TODO Check if game is NoneType
         print("----------")
-        if game['Name'] is not None: 
+        if game is not None and game['Name'] is not None: 
             row_data = [
             game['id'],
             game['Name'],
@@ -55,7 +55,7 @@ def main():
             #game['Popular User Defined Tags']
             ]
             data_to_insert.append(row_data)
-
+            '''
             for id in sheetIdList:
                 row_number = sheetIdList.index(id) + 2
                 worksheet.update_cell(row_number, 1, game['id'])
@@ -69,7 +69,7 @@ def main():
                 worksheet.update_cell(row_number, 10, ', '.join(game['Popular User Defined Tags']))
                 # Add more updates as needed
                 break
-        
+            '''
             
             for name in sheetGameList:
                 if name == game['Name']: #TODO OR id in sheetGameList == game['id']
