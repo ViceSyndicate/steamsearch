@@ -15,7 +15,6 @@ def main():
     worksheet = spreadsheet.worksheet('Copy of Keys for Giveaway')
     #get all values from column 1
     sheetGameList = worksheet.col_values(2)[1:]
-    sheetIdList = worksheet.col_values(1)[1:]
     
     # TODO Get all ID's in list.
     # Fill in that row with data using ID.
@@ -33,6 +32,8 @@ def main():
     headers = ['id', 'Name', 'Platforms', 'Popular User Defined Tags', 'Steam All-time Review Score %']
     newsheet.insert_rows([headers], 1)
     data_to_insert = []
+
+    GetGamesFromIds(worksheet)
 
     for id in matchingIds:
         # wait to avoid spamming steams api 
@@ -55,21 +56,6 @@ def main():
             #game['Popular User Defined Tags']
             ]
             data_to_insert.append(row_data)
-            '''
-            for id in sheetIdList:
-                row_number = sheetIdList.index(id) + 2
-                worksheet.update_cell(row_number, 1, game['id'])
-                time.sleep(1)
-                worksheet.update_cell(row_number, 7, game['Steam All-time Review Score %'])
-                time.sleep(1)
-                worksheet.update_cell(row_number, 8, ', '.join(game['Platforms']))
-                time.sleep(1)
-                worksheet.update_cell(row_number, 9, game['Singleplayer/Multiplayer Capabilities']) # single/multiplayer
-                time.sleep(1)
-                worksheet.update_cell(row_number, 10, ', '.join(game['Popular User Defined Tags']))
-                # Add more updates as needed
-                break
-            '''
             
             for name in sheetGameList:
                 if name == game['Name']: #TODO OR id in sheetGameList == game['id']
@@ -90,6 +76,36 @@ def main():
     print('------------')
     print('Finished!')
     pause = input("Press Enter to continue")
+
+def GetGamesFromIds(worksheet):
+    
+    # get all values in column A except for the title column.
+    sheetIdList = worksheet.col_values(1)[1:]
+    # sheedIdList looks like this: ['793460', '', '',...]
+    for index, id in enumerate(sheetIdList, start=2):
+
+        # if the id value for column is empty. skip updating.
+        if id == '':
+            continue
+
+        print("id: " + id)
+        # get data to fill in row cells
+        game = apiRequests.getAppData(id)
+        row_number = sheetIdList.index(id) + 2
+        
+        worksheet.update_cell(row_number, 1, game['id'])
+        time.sleep(1)
+        worksheet.update_cell(row_number, 2, game['Name'])
+        time.sleep(1)
+        worksheet.update_cell(row_number, 7, game['Steam All-time Review Score %'])
+        time.sleep(1)
+        worksheet.update_cell(row_number, 8, ', '.join(game['Platforms']))
+        time.sleep(1)
+        worksheet.update_cell(row_number, 9, game['Singleplayer/Multiplayer Capabilities']) # single/multiplayer
+        time.sleep(1)
+        worksheet.update_cell(row_number, 10, ', '.join(game['Popular User Defined Tags']))
+        # Add more updates as needed
+        break
 
 if __name__ == "__main__":
     main()
